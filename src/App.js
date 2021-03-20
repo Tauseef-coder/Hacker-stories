@@ -90,12 +90,22 @@ const app = () => {
     //const setSearchTerm = searchTermState[1];
 
     const [searchTerm, setSearchTerm] = React.useState('');
+    localStorage.gitItem ('search') || "React"
+  };
+  React.useEffect(() => {
+    localStorage.setItem('search', searchTerm);
+  }, [searchTerm]);
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  }
+
   const handleChange = event => {
     setSearchTerm(event.target.value);
+    localStorage.setItem("search", event.target.value);
   
   }
   // do something in between
-  return (
+  // return (
     <div>
       <h1> My Hacker Stories</h1>
 
@@ -114,31 +124,23 @@ const app = () => {
     </div>
   )
 };
+//pg52
+const search = props => {
+  const ({ search, onSearch })=>(
 
-const search = props => (
   <div>
-    <labrl htmlFor="search">Search :</labrl>
+    <label htmlFor="search">Search :</label>
     <input
     id="search"
     type="text"
-    value={props.search}
-    onChange={props.onScreen} />
+    value={search}
+    onChange={onScreen} />
   </div>
   //b
   // props.onSearch(event);
 );
 const Search = () => {
-  const [searchTerm, setSearchTerm] = React.useState('');
-
-  const handleChange = event => {
-    setSearchTerm(event.target.value);
-  };
-  const searchedStories = stories.filter(fuction(story) {
-    return story.title.includes(searchTerm),
-  });
-
-
-return (
+  const ({search, onsearch }) => (
   <div>
     <label htmlFor="search">Search:</label>
     <input id="search" type="text" onChange={props.onSearch} />
@@ -149,8 +151,10 @@ Searching for <strong>{searchTerm}</strong>.
   </div>
 )
 
-const stories = props => 
-  props.list.map(item => ( 
+const list =({list}) => 
+  list.map(item => <Item key={item.objectId} item={item} />);
+
+  const Item =({ item}) => (
       <div key={item.objectID}>
         <span>
           <a href={item.url}> {item.title}</a>
@@ -159,4 +163,4 @@ const stories = props =>
         <span>{item.num_comments}</span>
         <span>{item.points}</span>
       </div>
-    ))};
+    );
