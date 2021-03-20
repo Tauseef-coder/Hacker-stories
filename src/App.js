@@ -23,6 +23,11 @@ function App() {
   return(
     <div>
       <h1>My Hacker Stories</h1>
+      <inputWithLabel
+        id='search'
+        label='search'
+        value={searchTerm}
+        onInputChange={handleSearch} />
       
       <label htmlFor="search">Search : </label>
       <input id="search" type="text"/>
@@ -46,6 +51,17 @@ function App() {
     </div>
   )
  }
+ const inputWithLabel =({ id, label, value, onInputChange }) => (
+   <>
+   <label htmlFor={id}>{label}</label>
+   &nbsp;
+   <input
+   id={id}
+   type={type}
+   vlaue={vlaue}
+   onChange={onInputChange} />
+   </>
+ );
 function List() {
   return list.map(function(item) {
     return (
@@ -137,9 +153,7 @@ const app = () => {
   )
 };
 //pg52
-const search = props => {
-  const ({ search, onSearch })=>(
-
+const search = ({ search, onSearch })=>(
   <div>
     <label htmlFor="search">Search :</label>
     <input
