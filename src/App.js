@@ -79,6 +79,9 @@ const app = () => {
       objectID : 1,
     },
     ];
+    const handleSearch = event =>{
+      console.log(event.target.value);
+    }
     //const searchTermState = React.useState('');
     //const searchTerm = searchTermState[0];
     //const setSearchTerm = searchTermState[1];
@@ -92,6 +95,8 @@ const app = () => {
   return (
     <div>
       <h1> My Hacker Stories</h1>
+
+      <Search onSearch={handleSearch} />
       <label htmlFor="search">Search : </label>
       <input id="search" type="text" onChange={handleChange} />
 
@@ -107,6 +112,29 @@ const app = () => {
   )
 };
 
+const search = props =>{
+  //b
+  props.onSearch(event);
+}
+const Search = () => {
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const handleChange = event => {
+    setSearchTerm(event.target.value);
+  }
+
+
+return (
+  <div>
+    <label htmlFor="search">Search:</label>
+    <input id="search" type="text" onChange={handleChange} />
+
+    <p>
+Searching for <strong>{searchTerm}</strong>.
+    </p>
+  </div>
+)
+
 const stories = props => 
   props.list.map(item => ( 
       <div key={item.objectID}>
@@ -117,4 +145,4 @@ const stories = props =>
         <span>{item.num_comments}</span>
         <span>{item.points}</span>
       </div>
-    ));
+    ))};
