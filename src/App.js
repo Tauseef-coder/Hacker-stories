@@ -60,6 +60,17 @@ function List() {
     );
   });
 }
+const useSemiPersistentState = key, initialState => {
+  const [value ,setvalue] = React.useState(
+    localStorage.getItem(key) || initialState
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem('value',value);
+  },[value,key]);
+};
+return [value,setvalue];
+};
 const app = () => {
   const searchStories = stories.fliter (story => 
     story.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())
@@ -82,6 +93,7 @@ const app = () => {
       objectID : 1,
     },
     ];
+    const [searchTerm, setSearchTerm] = useSemiPersistentState();
     const handleSearch = event =>{
       setSearchTerm(event.target.value);
     }
