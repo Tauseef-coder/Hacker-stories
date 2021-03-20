@@ -61,6 +61,9 @@ function List() {
   });
 }
 const app = () => {
+  const searchStories = stories.fliter (story => 
+    story.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+  );
   const list = [
     {
       title: "React",
@@ -80,7 +83,7 @@ const app = () => {
     },
     ];
     const handleSearch = event =>{
-      console.log(event.target.value);
+      setSearchTerm(event.target.value);
     }
     //const searchTermState = React.useState('');
     //const searchTerm = searchTermState[0];
@@ -121,13 +124,16 @@ const Search = () => {
 
   const handleChange = event => {
     setSearchTerm(event.target.value);
-  }
+  };
+  const searchedStories = stories.filter(fuction(story) {
+    return story.title.includes(searchTerm),
+  });
 
 
 return (
   <div>
     <label htmlFor="search">Search:</label>
-    <input id="search" type="text" onChange={handleChange} />
+    <input id="search" type="text" onChange={props.onSearch} />
 
     <p>
 Searching for <strong>{searchTerm}</strong>.
