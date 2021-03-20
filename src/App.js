@@ -1,4 +1,5 @@
-import React from "react";
+//import React from "react";
+import React, { useState } from 'react';
 export default App;
 const list = [
 {
@@ -78,9 +79,14 @@ const app = () => {
       objectID : 1,
     },
     ];
-    function App() {
-  const handleChange = event =>{
-    console.log(event.target.value);
+    //const searchTermState = React.useState('');
+    //const searchTerm = searchTermState[0];
+    //const setSearchTerm = searchTermState[1];
+
+    const [searchTerm, setSearchTerm] = React.useState('');
+  const handleChange = event => {
+    setSearchTerm(event.target.value);
+  
   }
   // do something in between
   return (
@@ -89,15 +95,19 @@ const app = () => {
       <label htmlFor="search">Search : </label>
       <input id="search" type="text" onChange={handleChange} />
 
+      <p>
+  searching for <strong>{searchTerm}</strong>.
+      </p>
+
       <hr />
 
-      <list />
+      <list list={stories}/>
 
     </div>
   )
 };
 
-const List = () => {
+const stories = props => 
   props.list.map(item => ( 
       <div key={item.objectID}>
         <span>
