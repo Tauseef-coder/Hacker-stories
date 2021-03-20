@@ -1,4 +1,5 @@
 import React from "react";
+export default App;
 const list = [
 {
   title: "React",
@@ -59,6 +60,25 @@ function List() {
   });
 }
 const app = () => {
+  const list = [
+    {
+      title: "React",
+      url: "https://reactjs.org/",
+      author: "jordan walke",
+      num_comments: 3,
+      points : 4,
+      objectID : 0,
+    },
+    {
+      title: "Redux",
+      Url: "https://redux.js.org/",
+      author: "Dan Abramov, Andrew Clark",
+      num_comments :2,
+      points : 5,
+      objectID : 1,
+    },
+    ];
+    function App() {
   const handleChange = event =>{
     console.log(event.target.value);
   }
@@ -77,9 +97,8 @@ const app = () => {
   )
 };
 
-const lcist = () => {
-  return list.map(function(item) {
-    return (
+const List = () => {
+  props.list.map(item => ( 
       <div key={item.objectID}>
         <span>
           <a href={item.url}> {item.title}</a>
@@ -88,8 +107,4 @@ const lcist = () => {
         <span>{item.num_comments}</span>
         <span>{item.points}</span>
       </div>
-    );
-  });
-}
-
-export default App;
+    ));
