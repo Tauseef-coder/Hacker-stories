@@ -27,7 +27,10 @@ function App() {
         id='search'
         label='search'
         value={searchTerm}
-        onInputChange={handleSearch} />
+        onInputChange={handleSearch} 
+        >
+          <strong>Search: </strong>
+          </InputWithLabel>
       
       <label htmlFor="search">Search : </label>
       <input id="search" type="text"/>
