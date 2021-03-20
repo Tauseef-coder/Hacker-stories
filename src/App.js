@@ -1,4 +1,10 @@
 import React from "react";
+function getTitle(title){
+  return title;
+
+
+};
+
 
 
 function App(){
@@ -6,7 +12,10 @@ function App(){
   // do something in between
   return (
     <div> 
-      <h1> Hello World </h1> 
+      <h1> Hello  {getTitle("React")}</h1> 
+
+      <label htmlFor="search"> Search : </label>
+      <input id="search" type="text"/>
     </div>
 
   );
