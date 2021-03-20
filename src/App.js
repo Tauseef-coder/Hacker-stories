@@ -59,8 +59,19 @@ function List() {
   });
 }
 const app = () => {
+  const handleChange = event =>{
+    console.log(event.target.value);
+  }
+  // do something in between
   return (
     <div>
+      <h1> My Hacker Stories</h1>
+      <label htmlFor="search">Search : </label>
+      <input id="search" type="text" onChange={handleChange} />
+
+      <hr />
+
+      <list />
 
     </div>
   )
