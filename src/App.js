@@ -19,6 +19,14 @@ const initialStories = [
   objectID : 1,
 },
 ];
+const getAsyncstories = () =>
+  new Promise(resolve =>
+    setTimeout(
+      () => resolve({ data: { stories: initialStories} }),
+      2000
+      )
+  );
+    
 function App() { 
   return(
     <div>
@@ -125,6 +133,12 @@ const app = () => {
 
     const [searchTerm, setSearchTerm] = React.useState('');
     localStorage.gitItem ('search') || "React"
+    const [stoires, setStoires] = React.useState([]);
+    React.useEffect(() => {
+      getAsyncstories().then(result =>{
+        setStoires(result.data.stoires);
+      });
+    },[]);
   };
   React.useEffect(() => {
     localStorage.setItem('search', searchTerm);
