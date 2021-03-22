@@ -102,9 +102,9 @@ const useSemiPersistentState = key, initialState => {
 return [value,setvalue];
 };
 const app = () => {
-  const searchStories = stories.fliter (story => 
-    story.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())
-  );
+  const [stories ,setStories] = React.useState([]);
+  const [isLoading , setIsLoading] = React.useState(false);
+  const [isError , setIsError] = React.useState(false);
   const list = [
     {
       title: "React",
@@ -137,11 +137,13 @@ const app = () => {
     React.useEffect(() => {
       getAsyncstories().then(result =>{
         setStoires(result.data.stoires);
+        setIsLoading(false);
       });
+      .catch(()=> setIsError(true));
     },[]);
   };
   React.useEffect(() => {
-    localStorage.setItem('search', searchTerm);
+    setIsLoading(true);
   }, [searchTerm]);
   const handleSearch = event => {
     setSearchTerm(event.target.value);
@@ -164,13 +166,21 @@ const app = () => {
       <p>
   searching for <strong>{searchTerm}</strong>.
       </p>
-
+return (
+  <div>
       <hr />
-
-      <list list={stories}/>
-
+      {isError && <p> Soemting went wrong ...</p>}
+      {isLoading ? (
+        <p> Loading ...</p>
+      ):(
+      
+      <list 
+        list={searchedStories} 
+        onRemoveItem={handleRemoveStory}
+        />
+      )}
     </div>
-  )
+  );
 };
 //pg52
 const search = ({ search, onSearch })=>(
