@@ -1,31 +1,6 @@
 //import React from "react";
 import React, { useState } from 'react';
-
-const initialStories = [
-{
-  title: "React",
-  url: "https://reactjs.org/",
-  author: "jordan walke",
-  num_comments: 3,
-  points : 4,
-  objectID : 0,
-},
-{
-  title: "Redux",
-  Url: "https://redux.js.org/",
-  author: "Dan Abramov, Andrew Clark",
-  num_comments :2,
-  points : 5,
-  objectID : 1,
-},
-];
-const getAsyncstories = () =>
-  new Promise(resolve =>
-    setTimeout(
-      () => resolve({ data: { stories: initialStories} }),
-      2000
-      )
-  );
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
   const storiesReducer = (state, action) => {
     switch (action.type) {
       case 'STORIES_FETCH_INT':
@@ -175,19 +150,20 @@ const app = () => {
     localStorage.gitItem ('search') || "React"
     const [stoires, setStoires] = React.useState([]);
     React.useEffect(() => {
+      if (searchTerm) return;
       dispactchStories({ type: 'STORIES_FETCH_INT'})
-      getAsyncstories()
+      fetch(`${API_ENDPOINT}${searchTerm}`)//B
+      
         .then(result =>{
           dispactchStories({
             type: 'STORIES_FETCH_SUCCESS',
-            playload: result.data.stories,
+            playload: result.hits,//D,
           });
-          setIsLoading(false);
       });
       .catch(()=> 
         dispactchStories({ type: 'STORIES_FETCH_FAILURE'})
         );
-    },[]);
+    },[searchTerm]);
     const handleRemoveStory = item => {
       dispactchStories({
         type: 'REMOVE_STORY',
@@ -231,10 +207,7 @@ return (
       {stories.isLoading ? (
         <p> Loading ...</p>
       ):(
-      <list 
-        list={searchedStories} 
-        onRemoveItem={handleRemoveStory}
-        />
+      <List list={Stories.Data} onRemoveItem={handleRemoveStory}/>
       )}
     </div>
   );
