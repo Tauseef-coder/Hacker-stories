@@ -26,6 +26,19 @@ const getAsyncstories = () =>
       2000
       )
   );
+  const storiesReducer = (state, action) => {
+    switch (action.type) {
+      case 'SET_STORIES':
+        return action.plauload;
+      case 'REMOVE_STORY':
+        return state.filter(
+          story => action.playload.objectID !== story.objectID
+        );
+        default:
+          throw new Error();
+    }
+  };
+  
     
 function App() { 
   return(
@@ -105,6 +118,10 @@ const app = () => {
   const [stories ,setStories] = React.useState([]);
   const [isLoading , setIsLoading] = React.useState(false);
   const [isError , setIsError] = React.useState(false);
+  const [stories, dispactchStories] = React.useReducer(
+    storiesReducer,
+    []
+  );
   const list = [
     {
       title: "React",
@@ -135,13 +152,28 @@ const app = () => {
     localStorage.gitItem ('search') || "React"
     const [stoires, setStoires] = React.useState([]);
     React.useEffect(() => {
-      getAsyncstories().then(result =>{
-        setStoires(result.data.stoires);
-        setIsLoading(false);
+      getAsyncstories()
+        .then(result =>{
+          dispactchStories({
+            type: 'SET_STOIRES',
+            playload: result.data.stories,
+          });
+          setIsLoading(false);
       });
       .catch(()=> setIsError(true));
     },[]);
-  };
+    const handleRemoveStory = item => {
+      dispactchStories({
+        type: 'REMOVE_STORY',
+        playload : item,
+      });
+    
+      dispatchStories({
+        type: 'SET_STORIES',
+        playload: newStories,
+      });
+    };
+  
   React.useEffect(() => {
     setIsLoading(true);
   }, [searchTerm]);
