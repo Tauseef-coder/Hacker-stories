@@ -28,12 +28,32 @@ const getAsyncstories = () =>
   );
   const storiesReducer = (state, action) => {
     switch (action.type) {
-      case 'SET_STORIES':
-        return action.plauload;
-      case 'REMOVE_STORY':
-        return state.filter(
-          story => action.playload.objectID !== story.objectID
-        );
+      case 'STORIES_FETCH_INT':
+        return {
+          ...state,
+          isLoading: true,
+          isError : false,
+        };
+      case 'STORIES_FETCH_SUCCESS':
+        return {
+          ...state,
+          isLoading: false,
+          isError : false,
+          data: action.playload,
+        };
+        case 'STORIES_FETCH_FAILURE':
+          return {
+            ...state,
+            isLoading : false,
+            isError: true,
+          };
+          case 'REMOVE_STORY':
+            return {
+              ...state,
+              data: state.data.filter(
+                story => action.playload.objectID !== story.objectID
+              ),
+            };
         default:
           throw new Error();
     }
@@ -120,7 +140,7 @@ const app = () => {
   const [isError , setIsError] = React.useState(false);
   const [stories, dispactchStories] = React.useReducer(
     storiesReducer,
-    []
+    { data:[], isLoading: false, isError: false}
   );
   const list = [
     {
@@ -140,6 +160,9 @@ const app = () => {
       objectID : 1,
     },
     ];
+    const searchStories = stories.data.filter(story =>
+      story.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     const [searchTerm, setSearchTerm] = useSemiPersistentState();
     const handleSearch = event =>{
       setSearchTerm(event.target.value);
@@ -152,15 +175,18 @@ const app = () => {
     localStorage.gitItem ('search') || "React"
     const [stoires, setStoires] = React.useState([]);
     React.useEffect(() => {
+      dispactchStories({ type: 'STORIES_FETCH_INT'})
       getAsyncstories()
         .then(result =>{
           dispactchStories({
-            type: 'SET_STOIRES',
+            type: 'STORIES_FETCH_SUCCESS',
             playload: result.data.stories,
           });
           setIsLoading(false);
       });
-      .catch(()=> setIsError(true));
+      .catch(()=> 
+        dispactchStories({ type: 'STORIES_FETCH_FAILURE'})
+        );
     },[]);
     const handleRemoveStory = item => {
       dispactchStories({
@@ -201,11 +227,10 @@ const app = () => {
 return (
   <div>
       <hr />
-      {isError && <p> Soemting went wrong ...</p>}
-      {isLoading ? (
+      {stories.isError && <p> Soemting went wrong ...</p>}
+      {stories.isLoading ? (
         <p> Loading ...</p>
       ):(
-      
       <list 
         list={searchedStories} 
         onRemoveItem={handleRemoveStory}
