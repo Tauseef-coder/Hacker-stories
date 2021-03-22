@@ -1,7 +1,7 @@
 //import React from "react";
 import React, { useState } from 'react';
-export default App;
-const list = [
+
+const initialStories = [
 {
   title: "React",
   url: "https://reactjs.org/",
@@ -27,10 +27,11 @@ function App() {
         id='search'
         label='search'
         value={searchTerm}
+        isFocused
         onInputChange={handleSearch} 
         >
           <strong>Search: </strong>
-          </InputWithLabel>
+          </inputWithLabel>
       
       <label htmlFor="search">Search : </label>
       <input id="search" type="text"/>
@@ -47,6 +48,7 @@ function App() {
             <span>{item.num_comments}</span>
             <span>{item.points}</span>
             {item.tilte};
+            <List list={searchStories} onRemoveItem={handleRemoveStory} />
             </div>
       })}
 
@@ -61,7 +63,8 @@ function App() {
    <input
    id={id}
    type={type}
-   vlaue={vlaue}
+   value={value}
+   autofocus
    onChange={onInputChange} />
    </>
  );
@@ -78,7 +81,7 @@ function List() {
       </div>
     );
   });
-}
+//pg84
 const useSemiPersistentState = key, initialState => {
   const [value ,setvalue] = React.useState(
     localStorage.getItem(key) || initialState
@@ -180,16 +183,25 @@ Searching for <strong>{searchTerm}</strong>.
   </div>
 )
 
-const list =({list}) => 
-  list.map(item => <Item key={item.objectId} item={item} />);
-
-  const Item =({ item}) => (
-      <div key={item.objectID}>
-        <span>
+const list =({list onRemoveItem }) => 
+  list.map(item => (
+    <Item 
+      key={item.objectID}
+      item={item}
+      onRemoveItem={onRemoveItem} />
+  ));
+  const Item=({item, onRemoveItem}) => (
+    <div>
+      <span>
           <a href={item.url}> {item.title}</a>
         </span>
         <span>{item.author}</span>
         <span>{item.num_comments}</span>
         <span>{item.points}</span>
-      </div>
-    );
+        <span>
+          <button type="button" onClick={() => onRemoveItem(item)}> Dismiss
+          </button>
+      </span> 
+    </div>
+   );
+    export default App;
