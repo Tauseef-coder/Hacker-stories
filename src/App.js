@@ -1,4 +1,5 @@
 //import React from "react";
+
 import React, { useState } from 'react';
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
   const storiesReducer = (state, action) => {
@@ -109,38 +110,10 @@ const useSemiPersistentState = key, initialState => {
 };
 return [value,setvalue];
 };
+//A
 const app = () => {
-  const [stories ,setStories] = React.useState([]);
-  const [isLoading , setIsLoading] = React.useState(false);
-  const [isError , setIsError] = React.useState(false);
-  const [stories, dispactchStories] = React.useReducer(
-    storiesReducer,
-    { data:[], isLoading: false, isError: false}
-  );
-  const list = [
-    {
-      title: "React",
-      url: "https://reactjs.org/",
-      author: "jordan walke",
-      num_comments: 3,
-      points : 4,
-      objectID : 0,
-    },
-    {
-      title: "Redux",
-      Url: "https://redux.js.org/",
-      author: "Dan Abramov, Andrew Clark",
-      num_comments :2,
-      points : 5,
-      objectID : 1,
-    },
-    ];
-    const searchStories = stories.data.filter(story =>
-      story.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    const [searchTerm, setSearchTerm] = useSemiPersistentState();
-    const handleSearch = event =>{
-      setSearchTerm(event.target.value);
+  const handleFetchStories = React.useCaallback(() => {//B
+  }
     }
     //const searchTermState = React.useState('');
     //const searchTerm = searchTermState[0];
@@ -150,7 +123,7 @@ const app = () => {
     localStorage.gitItem ('search') || "React"
     const [stoires, setStoires] = React.useState([]);
     React.useEffect(() => {
-      if (searchTerm) return;
+      if (!searchTerm) return;
       dispactchStories({ type: 'STORIES_FETCH_INT'})
       fetch(`${API_ENDPOINT}${searchTerm}`)//B
       
@@ -163,20 +136,11 @@ const app = () => {
       .catch(()=> 
         dispactchStories({ type: 'STORIES_FETCH_FAILURE'})
         );
-    },[searchTerm]);
-    const handleRemoveStory = item => {
-      dispactchStories({
-        type: 'REMOVE_STORY',
-        playload : item,
-      });
-    
-      dispatchStories({
-        type: 'SET_STORIES',
-        playload: newStories,
-      });
-    };
-  
+    },[searchTerm]);//E
+   
   React.useEffect(() => {
+    handleFetchStories();//C
+  },[handleFetchStories];//D
     setIsLoading(true);
   }, [searchTerm]);
   const handleSearch = event => {
