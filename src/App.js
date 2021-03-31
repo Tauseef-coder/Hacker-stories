@@ -183,20 +183,14 @@ const app = () => {
       <h1> My Hacker Stories</h1>
      <SearchFrom
      searchTerm={searchTerm}
-     onSearchInput={handleSearchInput}
-     onSearchSubmit={handleSearchSubmit}
+     onSearchInput={() => this.setState({
+       searchTerm:  event.target.value
+     })}
      />
-      <hr />
-      {stories.isError && <p> Soemting went wrong ...</p>}
-      {stories.isLoading ? (
-        <p> Loading ...</p>
-      ):(
-      <List list={Stories.Data} onRemoveItem={handleRemoveStory}/>
-      )}
     </div>
   );
 };
-
+};
 const SearchFrom= ({ searchTerm,
  onSearchinput,
  onSearchSubmit,
