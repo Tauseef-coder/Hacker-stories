@@ -174,33 +174,18 @@ const app = () => {
   };
   const handleSearchSubmit = () => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
+
+    event.preventDefault();
   };
   // do something in between
   return (
     <div>
       <h1> My Hacker Stories</h1>
-
-      <inputWithLabel
-      id="search"
-      value={searchTerm}
-      isFocused
-      onInputChange={handleSearchInput}
-      >
-        <strong>Search:</strong>
-      </inputWithLabel>
-      <button
-        type="button"
-        disabled={!searchTerm}
-        onClick={handleSearchSubmit}
-        >
-          Submit
-        </button>
-
-      <p>
-  searching for <strong>{searchTerm}</strong>.
-      </p>
-return (
-  <div>
+     <SearchFrom
+     searchTerm={searchTerm}
+     onSearchInput={handleSearchInput}
+     onSearchSubmit={handleSearchSubmit}
+     />
       <hr />
       {stories.isError && <p> Soemting went wrong ...</p>}
       {stories.isLoading ? (
@@ -211,18 +196,24 @@ return (
     </div>
   );
 };
-//pg52
-const search = ({ search, onSearch })=>(
-  <div>
-    <label htmlFor="search">Search :</label>
-    <input
-    id="search"
-    type="text"
-    value={search}
-    onChange={onScreen} />
-  </div>
-  //b
-  // props.onSearch(event);
+
+const SearchFrom= ({ searchTerm,
+ onSearchinput,
+ onSearchSubmit,
+  }) => (
+    <form onSubmit={onSearchSubmit}>
+      <inputWithLabel
+      id="search"
+      value={searchTerm}
+      isFocused
+      onInputChange={onSearchInput}
+      >
+        <strong>Search:</strong>
+      </inputWithLabel>
+      <button type="submit" disabled={!searchTerm}>
+        submit
+      </button>
+    </form>
 );
 const Search = () => {
   const ({search, onsearch }) => (
