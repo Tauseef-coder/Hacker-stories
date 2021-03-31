@@ -114,7 +114,7 @@ return [value,setvalue];
 const app = () => {
   const handleFetchStories = React.useCaallback(() => {//B
   }
-    }
+    //}
     //const searchTermState = React.useState('');
     //const searchTerm = searchTermState[0];
     //const setSearchTerm = searchTermState[1];
@@ -125,7 +125,7 @@ const app = () => {
     React.useEffect(() => {
       if (!searchTerm) return;
       dispactchStories({ type: 'STORIES_FETCH_INT'})
-      fetch(`${API_ENDPOINT}${searchTerm}`)//B
+      fetch(url)//B
       
         .then(result =>{
           dispactchStories({
@@ -136,7 +136,7 @@ const app = () => {
       .catch(()=> 
         dispactchStories({ type: 'STORIES_FETCH_FAILURE'})
         );
-    },[searchTerm]);//E
+    },[url]);//E
    
   React.useEffect(() => {
     handleFetchStories();//C
@@ -152,14 +152,35 @@ const app = () => {
     localStorage.setItem("search", event.target.value);
   
   }
+  const [url, setUrl]=React.useState(
+    `${API_ENDPOINT}${searchTerm}`
+  );
+  const handleSearchInput = event =>{
+    setSearchTerm(event.target.value);
+  };
+  const handleSearchSubmit = () => {
+    setUrl(`${API_ENDPOINT}${searchTerm}`);
+  };
   // do something in between
-  // return (
+  return (
     <div>
       <h1> My Hacker Stories</h1>
 
-      <Search onSearch={searchTerm} onSearch={handleSearch} />
-      <label htmlFor="search">Search : </label>
-      <input id="search" type="text" onChange={handleChange} />
+      <inputWithLabel
+      id="search"
+      value={searchTerm}
+      isFocused
+      onInputChange={handleSearchInput}
+      >
+        <strong>Search:</strong>
+      </inputWithLabel>
+      <button
+        type="button"
+        disabled={!searchTerm}
+        onClick={handleSearchSubmit}
+        >
+          Submit
+        </button>
 
       <p>
   searching for <strong>{searchTerm}</strong>.
