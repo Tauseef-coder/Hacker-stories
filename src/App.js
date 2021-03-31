@@ -113,8 +113,17 @@ return [value,setvalue];
 };
 //A
 const app = () => {
-  const handleFetchStories = React.useCaallback(() => {//B
+  const handleFetchStories = React.useCaallback(async() => {//B
     dispactchStories({ type: 'STORIES_FETCH_INIT'});
+    try {
+    const result = await axios.get(url);
+    dispactchStories({
+      type: 'STORIES_FETCH_SUCCESS',
+      playload: result.data.hits,
+    });
+  }catch{
+    dispactchStories({ type: 'STORIES_FETCH_FAILURE'});
+  }
     axios
       .get(url)
       .then(reulst =>{
