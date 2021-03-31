@@ -1,4 +1,5 @@
-//import React from "react";
+import React from 'react';
+import axios from 'axios';
 
 import React, { useState } from 'react';
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
@@ -113,7 +114,10 @@ return [value,setvalue];
 //A
 const app = () => {
   const handleFetchStories = React.useCaallback(() => {//B
-  }
+    dispactchStories({ type: 'STORIES_FETCH_INIT'});
+    axios
+      .get(url)
+      .then(reulst =>{
     //}
     //const searchTermState = React.useState('');
     //const searchTerm = searchTermState[0];
@@ -124,7 +128,8 @@ const app = () => {
     const [stoires, setStoires] = React.useState([]);
     React.useEffect(() => {
       if (!searchTerm) return;
-      dispactchStories({ type: 'STORIES_FETCH_INT'})
+      dispactchStories({ 
+        type: 'STORIES_FETCH_INT'})
       fetch(url)//B
       
         .then(result =>{
